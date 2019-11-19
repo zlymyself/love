@@ -3,13 +3,11 @@
   <el-row class="main" style="background-color: white;padding:20px 24px 8px;">
     <el-row>
       <el-form style="margin-top: 10px" >
-        <el-form-item label="月份:" style="width: 220px;float: left" >
-          <el-date-picker v-model="date" value-format="yyyy-MM-dd" type="month" style="width: 150px" />
+        <el-form-item label="月份:" style="width: 1220px;float: left" >
+          <el-date-picker v-model="date" value-format="yyyy-MM-dd" type="month" style="width: 150px;float:left"></el-date-picker>
+          <el-button type="primary" style="float: left;margin-left:20px" @click="search">查询</el-button>
         </el-form-item>
-        <el-form-item style="float: left">
-          <el-button type="primary" @click="search">查询</el-button>
-        </el-form-item>
-        <el-form-item style="width:1200px;float: left">
+        <el-form-item style="width:1200px">
           <el-button type="primary" style="float: left" @click="imitateExtract">模拟抽取</el-button>
           <el-button type="primary" style="float: left" @click="formalExtract">正式抽取</el-button>
           <el-button type="primary" style="float: left" @click="calculation">计算</el-button>
@@ -19,9 +17,9 @@
         </el-form-item>
           <el-collapse-transition>
             <div style="1200px" v-if="isShow">
-                <el-button type="primary" style="float: left" @click="imitateExtract">条目设置</el-button>
-                <el-button type="primary" style="float: left" @click="formalExtract">考核电量偏差</el-button>
-                <el-button type="primary" style="float: left" @click="calculation">考核电价配置</el-button>
+                <el-button type="primary" style="float: left" @click="tsetting">偏差考核条目设置</el-button>
+                <el-button type="primary" style="float: left" @click="checkD">偏差考核电量偏差阈值配置</el-button>
+                <el-button type="primary" style="float: left" @click="checkP">偏差考核电价阈值配置</el-button>
             </div>
           </el-collapse-transition>
       </el-form>
@@ -29,10 +27,13 @@
     <el-row id="exportTab" style="margin-top:20px">
       <el-table>
         <el-table-column prop="participantName" label="发电企业" align="center" :width="150"></el-table-column>
-        <el-table-column prop="mktMonth" label="月份" align="center"></el-table-column>
+        <el-table-column prop="accountEng" label="结算电量" align="center"></el-table-column>
+        <el-table-column prop="planEng" label="计划电量" align="center"></el-table-column>
+        <el-table-column prop="planFinish" label="计划完成率" align="center"></el-table-column>
         <el-table-column prop="shouldEng" label="应考核电量" align="center"></el-table-column>
         <el-table-column prop="exempEng" label="免考核电量" align="center"></el-table-column>
-        <el-table-column prop="planAdjust" label="计划调整" align="center"></el-table-column>
+        <el-table-column prop="planAdjust" label="计划调整电量" align="center"></el-table-column>
+        <el-table-column prop="ajustPlanFinish" label="调整后计划完成率" align="center"></el-table-column>
         <el-table-column label="电厂考核" align="center">
           <el-table-column prop="actualcheckEng" label="实际考核电量" align="center"></el-table-column>
           <el-table-column prop="checkPrice" label="考核电价" align="center"></el-table-column>
@@ -43,7 +44,6 @@
           <el-table-column prop="transcheckPrice" label="通道考核电价" align="center"></el-table-column>
           <el-table-column prop="transcheckFee" label="通道考核电费" align="center"></el-table-column>
         </el-table-column>
-        <el-table-column prop="shouldFee" label="应考核电费" align="center"></el-table-column>
         <el-table-column prop="sumFee" label="总考核电费" align="center"></el-table-column>
       </el-table>
     </el-row>
@@ -94,7 +94,21 @@ export default {
     calculation() {},
     save() {},
     exportExcel() {},
-    more() {}
+    tsetting() {
+      this.$router.push({
+        path:'/tsetting'
+      })
+    },
+    checkP() {
+      this.$router.push({
+        path:'/checkprice'
+      })
+    },
+    checkD() {
+      this.$router.push({
+        path:'/checkdeviation'
+      })
+    }
   },
   created() {
 
